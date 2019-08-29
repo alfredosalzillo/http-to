@@ -1,0 +1,36 @@
+{
+  "name": "http-to",
+  "version": "0.0.1",
+  "description": "Http to javascript online converter, dart, ecc...",
+  "scripts": {
+    "build": "rollup -c rollup.config.js",
+    "watch": "rollup -c -w rollup.config.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "babel-jest": "^24.5.0",
+    "babel-preset-airbnb": "^3.0.1",
+    "core-js": "2.6.5",
+    "eslint": "^5.10.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-class-property": "^1.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jest": "^22.4.1",
+    "jest": "^24.5.0",
+    "rollup": "^1.20.2",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-eslint": "^7.0.0",
+    "rollup-plugin-livereload": "^1.0.1",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-serve": "^1.0.1"
+  },
+  "dependencies": {
+    "haunted": "^4.5.3",
+    "lit-html": "^1.1.2",
+    "masquerades": "0.0.1-alpha.5"
+  }
+}
