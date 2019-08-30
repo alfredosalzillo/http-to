@@ -1,6 +1,7 @@
 import { html } from 'lit-html';
 
 const defined = new WeakMap();
+let numberOfDefined = 0;
 export const define = (Constructor, {
   name: defaultName,
   ...options
@@ -8,7 +9,8 @@ export const define = (Constructor, {
   if (defined.has(Constructor)) {
     return defined.get(Constructor);
   }
-  const name = defaultName || `app-${String.fromCharCode(...[...Date.now().toString()].map(n => Number(n) + 97))}`;
+  numberOfDefined += 1;
+  const name = defaultName || `app-${String.fromCharCode(...[...(Date.now().toString() + numberOfDefined)].map(n => Number(n) + 97))}`;
   customElements.define(name, Constructor, options);
   defined.set(Constructor, name);
   return name;
@@ -44,6 +46,5 @@ export default (strings, ...values) => {
     return [...acc, string];
   }, []);
   const parsedValues = values.filter(value => !(isHTMLElement(value) || typeof value === 'string'));
-  console.log(parsedStrings, parsedValues);
   return html(parsedStrings, ...parsedValues);
 };
