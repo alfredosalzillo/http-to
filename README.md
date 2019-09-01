@@ -7,4 +7,5 @@ Online demo [http-to](http://alfredosalzillo.me/http-to/).
 
 ## Supported Languages
 
-* Javascript
+* javascript (fetch)
+* dart (http)

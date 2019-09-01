@@ -48,6 +48,7 @@ const parse = (http) => {
 };
 
 export default parse;
+
 const stringify = thigh => JSON
   .stringify(thigh, null, 4)
   .replace(/}$/, '  }');
@@ -65,6 +66,25 @@ fetch('${httpAst.uri.raw}', {
   headers: ${stringify(Object.fromEntries(httpAst.headers.map(({ name, value }) => [name, value])))},
   ${httpAst.body.text && `${javascriptBody(httpAst.body)},`}
 })
+`
+  .replace(/^\n*/, '')
+  .replace(/\n*$/, '');
+
+const dartBody = (bodyAst) => {
+  switch (bodyAst.contentType.trim().toLocaleLowerCase()) {
+    case 'application/json':
+      return `body: ${stringify(bodyAst.value)}`;
+    default:
+      return `body: '${bodyAst.text}'`;
+  }
+};
+export const toDartHttp = httpAst => `
+http.${httpAst.method.toLowerCase()}('${httpAst.uri.raw}',
+  headers: ${stringify(Object.fromEntries(httpAst.headers.map(({ name, value }) => [name, value])))}${
+  httpAst.body.text && ','
+}
+  ${httpAst.body.text && `${dartBody(httpAst.body)}`}
+);
 `
   .replace(/^\n*/, '')
   .replace(/\n*$/, '');

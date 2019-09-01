@@ -4,8 +4,15 @@ import {
 import styled from 'masquerades';
 import { html } from 'lit-html';
 import { define } from '../html';
-import parseHttp, { toJavascriptFetch } from '../http/http';
+import parseHttp, { toJavascriptFetch, toDartHttp } from '../http/http';
 import CarbonCode from './CarbonCode/CarbonCode';
+
+const languagesMapping = {
+  javascript: toJavascriptFetch,
+  dart: toDartHttp,
+};
+
+const convertTo = (language, code) => languagesMapping[language](parseHttp(code));
 
 define(CarbonCode, {
   name: 'carbon-code',
@@ -144,9 +151,10 @@ export default define(component(() => {
   }, [text]);
   const [loading, setLoading] = useState(false);
   const [code, setCode] = useState(exampleParsed);
+  const language = useRef('javascript');
   const onConvert = useCallback(() => {
-    setCode(toJavascriptFetch(parseHttp(text.current)));
-  }, [setCode, setLoading]);
+    setCode(convertTo(language.current, text.current));
+  }, [setCode, setLoading, language]);
   useEffect(() => {
     if (code) {
       setLoading(true);
@@ -155,6 +163,9 @@ export default define(component(() => {
   const onCodeLoadComplete = useCallback(() => {
     setLoading(false);
   }, [setLoading]);
+  const onSelectChange = useCallback((e) => {
+    language.current = e.target.value;
+  }, [language]);
   return html`
     <div is="app-div">
         <h1>HTTP-TO</h1>
@@ -163,8 +174,8 @@ export default define(component(() => {
             <textarea @input=${onTextareaInput}>${text.current}</textarea>
         </div>
         <div class="bottom">
-            <select>
-                <option value="javascript">Javascript</option>
+            <select @change=${onSelectChange}>
+                ${Object.keys(languagesMapping).map(lan => html`<option .value=${lan} ?selected=${lan === language}>${lan}</option>`)}
             </select>
             <button is="fancy-button" 
                 @click=${onConvert} 
@@ -175,7 +186,7 @@ export default define(component(() => {
         <div class="output-code">
             <carbon-code 
                 .code=${code} 
-                language="javascript"
+                .language=${language.current}
                 .onLoad=${onCodeLoadComplete}
             ></carbon-code>
         </div>
