@@ -104,21 +104,22 @@ define(styled.div`
 });
 
 define(styled.button`
-  background: #282a36;
-  padding: 0.5rem 1rem;
-  font-size: 14px;
-  line-height: 133%;
-  font-family: Hack, monospace !important;
-  border: none;
-  color: white;
-  text-transform: lowercase;
-  cursor: pointer; 
-  transition: 0.2s ease-in-out; 
-  border-radius: 3px;
-  &:disabled {
-    border-radius: 5px;
-    background-color: grey;
-  }
+    background: #282a36;
+    padding: 0.5rem 1rem;
+    font-size: 14px;
+    line-height: 133%;
+    font-family: Hack, monospace !important;
+    border: none;
+    color: white;
+    text-transform: lowercase;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+    border-radius: 3px;
+
+    &:disabled {
+      border-radius: 3px;
+      background-color: #505254;
+    }
 `, {
   name: 'fancy-button',
   extends: 'button',
