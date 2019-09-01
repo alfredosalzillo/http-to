@@ -106,8 +106,19 @@ define(styled.button`
   extends: 'button',
 });
 
+const exampleHttp = `
+POST https://jsonplaceholder.typicode.com/posts/1
+Content-Type: application/json
+
+{
+  "title": "foo",
+  "body": "bar",
+  "id": 1
+}
+`;
+
 export default define(component(() => {
-  const text = useRef('');
+  const text = useRef(exampleHttp);
   const onTextareaInput = useCallback((e) => {
     text.current = e.target.value;
   }, [text]);
