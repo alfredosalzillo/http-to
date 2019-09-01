@@ -116,6 +116,7 @@ Content-Type: application/json
   "id": 1
 }
 `;
+const exampleParsed = toJavascriptFetch(parseHttp(exampleHttp));
 
 export default define(component(() => {
   const text = useRef(exampleHttp);
@@ -123,7 +124,7 @@ export default define(component(() => {
     text.current = e.target.value;
   }, [text]);
   const [loading, setLoading] = useState(false);
-  const [code, setCode] = useState('');
+  const [code, setCode] = useState(exampleParsed);
   const onConvert = useCallback(() => {
     setCode(toJavascriptFetch(parseHttp(text.current)));
   }, [setCode, setLoading]);
