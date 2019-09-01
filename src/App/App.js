@@ -13,10 +13,10 @@ define(CarbonCode, {
 
 define(styled.div`
     :global(body) {
-        background-color: #646464;
-        width: 100vw;
-        height: 100vh;
-        margin: 0;
+      background-color: #646464;
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
     }
 
     display: block;
@@ -26,24 +26,39 @@ define(styled.div`
 
     .top,
     .bottom,
-    .center,  
-    .output-cod {
+    .center,
+    .footer {
+      font-family: Hack, monospace !important;
+      color: white;
       display: block;
       margin: auto;
       padding-top: 2px;
       padding-left: 47px;
       padding-right: 47px;
     }
+
+    .footer {
+      text-align: center;
+      font-size: 12px;
+
+      & a {
+        text-decoration: none;
+        color: #caddf5;
+      }
+    }
+
     h1, .subtitle {
       color: white;
       font-family: Hack, monospace !important;
       text-align: center;
       width: 100%;
     }
+
     .subtitle {
       padding: 20px;
       font-weight: bold;
-    } 
+    }
+
     select {
       background: #282a36;
       padding: 0.5rem 1rem;
@@ -54,8 +69,9 @@ define(styled.div`
       color: white;
       text-transform: lowercase;
       appearance: none;
+      border-radius: 3px;
     }
-      
+
     textarea {
       resize: none;
       display: block;
@@ -66,18 +82,19 @@ define(styled.div`
       width: calc(100% - 40px);
       min-height: 200px;
       padding: 20px;
-      margin: auto; 
-      font-size: 14px; 
+      margin: auto;
+      font-size: 14px;
       line-height: 133%;
       font-variant-ligatures: contextual;
       font-feature-settings: "calt";
       user-select: none;
       font-family: Hack, monospace !important;
     }
+
     textarea:focus, select:focus {
       outline: 0;
     }
-  
+
     button {
       float: right;
     }
@@ -96,7 +113,8 @@ define(styled.button`
   color: white;
   text-transform: lowercase;
   cursor: pointer; 
-  transition: 0.2s ease-in-out;
+  transition: 0.2s ease-in-out; 
+  border-radius: 3px;
   &:disabled {
     border-radius: 5px;
     background-color: grey;
@@ -159,6 +177,9 @@ export default define(component(() => {
                 language="javascript"
                 .onLoad=${onCodeLoadComplete}
             ></carbon-code>
+        </div>
+        <div class="footer">
+            find on <a href="https://github.com/alfredosalzillo/http-to">github</a>
         </div>
     </div>
   `;
