@@ -12,7 +12,7 @@ export default {
     format: 'esm',
   },
   plugins: [
-    eslint(),
+    // eslint(),
     commonjs(),
     resolve(),
     // babel({

@@ -1,11 +1,18 @@
 import {
-  component, useState, useRef
+  component, useState, useRef,
 } from 'haunted';
-import html, { define } from '../html';
-import parseHttp, { toJavascriptFetch } from '../http';
-import styled from "masquerades";
+import styled from 'masquerades';
+import { html } from 'lit-html';
+import { define } from '../html';
+import parseHttp, { toJavascriptFetch } from '../http/http';
+import CarbonCode from './CarbonCode/CarbonCode';
+import { useCallback, useEffect } from 'haunted/lib/haunted';
 
-const StyledApp = define(styled.div`
+define(CarbonCode, {
+  name: 'carbon-code',
+});
+
+define(styled.div`
     :global(body) {
         background-color: #646464;
         width: 100vw;
@@ -14,29 +21,61 @@ const StyledApp = define(styled.div`
     }
 
     display: block;
-    width: 100%;
+    max-width: 800px;
     margin: auto;
+    padding: 1rem;
 
     .top,
     .bottom,
+    .center,  
     .output-cod {
       display: block;
-      width: 90%;
       margin: auto;
-      padding: 10px;
+      padding-top: 2px;
+      padding-left: 47px;
+      padding-right: 47px;
     }
-
-    textarea {
-      display: block;
-      background-color: white;
-      border: 3px solid #fff;
-      border-radius: 20px;
-      width: 90%;
-      height: 300px;
+    h1, .subtitle {
+      color: white;
+      font-family: Hack, monospace !important;
+      text-align: center;
+      width: 100%;
+    }
+    .subtitle {
       padding: 20px;
-      margin: auto;
+      font-weight: bold;
+    } 
+    select {
+      background: #282a36;
+      padding: 0.5rem 1rem;
+      font-size: 14px;
+      line-height: 133%;
+      font-family: Hack, monospace !important;
+      border: none;
+      color: white;
+      text-transform: lowercase;
+      appearance: none;
     }
-    textarea:focus {
+      
+    textarea {
+      resize: none;
+      display: block;
+      background-color: #282a36;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      width: calc(100% - 40px);
+      min-height: 200px;
+      padding: 20px;
+      margin: auto; 
+      font-size: 14px; 
+      line-height: 133%;
+      font-variant-ligatures: contextual;
+      font-feature-settings: "calt";
+      user-select: none;
+      font-family: Hack, monospace !important;
+    }
+    textarea:focus, select:focus {
       outline: 0;
     }
   
@@ -44,54 +83,71 @@ const StyledApp = define(styled.div`
       float: right;
     }
 `, {
+  name: 'app-div',
   extends: 'div',
 });
 
-const StyledButton = define(styled.button`
-  background: #f1c40f;
-  color: #fff;
-  border: 3px solid #fff;
-  border-radius: 50px;
-  padding: 0.8rem 2rem;
-  font: 24px "Margarine", sans-serif;
-  outline: none;
-  cursor: pointer;
-  position: relative;
+define(styled.button`
+  background: #282a36;
+  padding: 0.5rem 1rem;
+  font-size: 14px;
+  line-height: 133%;
+  font-family: Hack, monospace !important;
+  border: none;
+  color: white;
+  text-transform: lowercase;
+  cursor: pointer; 
   transition: 0.2s ease-in-out;
-  letter-spacing: 2px;
   &:disabled {
-    border-radius: 15px;
+    border-radius: 5px;
     background-color: grey;
   }
 `, {
+  name: 'fancy-button',
   extends: 'button',
 });
 
 export default define(component(() => {
   const text = useRef('');
-  const [converted, setConverted] = useState('');
-  const convert = () => setConverted(toJavascriptFetch(parseHttp(text.current)));
+  const onTextareaInput = useCallback((e) => {
+    text.current = e.target.value;
+  }, [text]);
+  const [loading, setLoading] = useState(false);
+  const [code, setCode] = useState('');
+  const onConvert = useCallback(() => {
+    setCode(toJavascriptFetch(parseHttp(text.current)));
+  }, [setCode, setLoading]);
+  useEffect(() => {
+    if (code) {
+      setLoading(true);
+    }
+  }, [code]);
+  const onCodeLoadComplete = useCallback(() => {
+    setLoading(false);
+  }, [setLoading]);
   return html`
-    <div is="${StyledApp}">
-        <div class="top">
-            <select>
-                <option selected value="javascript">Javascript</option>
-            </select>
-        </div>            
-        <div>
-            <textarea @input=${(e) => text.current = e.target.value}>${text.current}</textarea>
+    <div is="app-div">
+        <h1>HTTP-TO</h1>
+        <div class="subtitle">Convert HTTP request to other languages</div>      
+        <div class="center">
+            <textarea @input=${onTextareaInput}>${text.current}</textarea>
         </div>
         <div class="bottom">
-            <button is="${StyledButton}" @click=${convert}>Convert</button>    
+            <select>
+                <option value="javascript">Javascript</option>
+            </select>
+            <button is="fancy-button" 
+                @click=${onConvert} 
+                ?loading=${loading}
+                ?disabled=${loading}
+             >Convert</button>    
         </div>
         <div class="output-code">
-        <iframe
-          src="https://carbon.now.sh/embed/?bg=rgba(64%252C64%252C64%252C0)&t=dracula&l=javascript&fl=1&fm=Hack&fs=14px&es=2x&wm=false&code=${encodeURI(converted).replace(/&/ig, '%26')})"
-          width="100%"
-          height="500px"
-          style="border: 0; overflow: hidden;"
-          sandbox="allow-scripts allow-same-origin">
-        </iframe>
+            <carbon-code 
+                .code=${code} 
+                language="javascript"
+                .onLoad=${onCodeLoadComplete}
+            ></carbon-code>
         </div>
     </div>
   `;

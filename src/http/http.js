@@ -49,9 +49,9 @@ const parse = (http) => {
 
 export default parse;
 export const toJavascriptFetch = httpAst => (
-`fetch('${httpAst.uri.raw}', {
+  `fetch('${httpAst.uri.raw}', {
   method: '${httpAst.method}',
   headers: ${JSON.stringify(Object.fromEntries(httpAst.headers.map(({ name, value }) => [name, value])), null, 4)},
-  body: \`${httpAst.body.text}\`,
+  ${httpAst.body.text && `body: \`${httpAst.body.text}\``},
 })`
 );
