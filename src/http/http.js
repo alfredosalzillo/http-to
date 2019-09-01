@@ -48,10 +48,23 @@ const parse = (http) => {
 };
 
 export default parse;
-export const toJavascriptFetch = httpAst => (
-  `fetch('${httpAst.uri.raw}', {
+const stringify = thigh => JSON
+  .stringify(thigh, null, 4)
+  .replace(/}$/, '  }');
+const javascriptBody = (bodyAst) => {
+  switch (bodyAst.contentType.trim().toLocaleLowerCase()) {
+    case 'application/json':
+      return `body: JSON.stringify(${stringify(bodyAst.value)})`;
+    default:
+      return `body: \`${bodyAst.text}\``;
+  }
+};
+export const toJavascriptFetch = httpAst => `
+fetch('${httpAst.uri.raw}', {
   method: '${httpAst.method}',
-  headers: ${JSON.stringify(Object.fromEntries(httpAst.headers.map(({ name, value }) => [name, value])), null, 4)},
-  ${httpAst.body.text && `body: \`${httpAst.body.text}\``},
-})`
-);
+  headers: ${stringify(Object.fromEntries(httpAst.headers.map(({ name, value }) => [name, value])))},
+  ${httpAst.body.text && `${javascriptBody(httpAst.body)},`}
+})
+`
+  .replace(/^\n*/, '')
+  .replace(/\n*$/, '');
