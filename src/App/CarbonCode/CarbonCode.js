@@ -1,20 +1,15 @@
 import { html } from 'lit-html';
-import { component, useState } from 'haunted';
+import { component } from 'haunted';
 
 const purifyCode = code => encodeURI(code).replace(/&/ig, '%26');
 const carbonEmbedUrl = 'https://carbon.now.sh/embed';
 function CarbonCode({ code, language, onLoad }) {
-  const [height, setHeight] = useState('380px');
-  const handleLoad = (e) => {
-    onLoad(e);
-    setHeight(e.target.contentWindow.document.body.scrollHeight);
-  };
   return code && html`
    <iframe
     src="${carbonEmbedUrl}/?bg=rgba(64%252C64%252C64%252C0)&t=dracula&wt=none&wc=true&wa=false&ds=false&l=${language}&fl=1&fm=Hack&fs=14px&es=2x&wm=false&code=${purifyCode(code)}"
-    @load=${handleLoad}
+    @load=${onLoad}
     width="100%"
-    .height=${height}
+    .height=${code.split('\n').length * 35}
     style="border: 0; overflow: hidden;"
     sandbox="allow-scripts allow-same-origin">
   </iframe>
