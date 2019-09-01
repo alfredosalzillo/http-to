@@ -1,12 +1,11 @@
 import {
-  component, useState, useRef,
+  component, useState, useRef, useCallback, useEffect
 } from 'haunted';
 import styled from 'masquerades';
 import { html } from 'lit-html';
 import { define } from '../html';
 import parseHttp, { toJavascriptFetch } from '../http/http';
 import CarbonCode from './CarbonCode/CarbonCode';
-import { useCallback, useEffect } from 'haunted/lib/haunted';
 
 define(CarbonCode, {
   name: 'carbon-code',
