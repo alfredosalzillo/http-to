@@ -30,7 +30,7 @@
     "rollup-plugin-serve": "^1.0.1"
   },
   "dependencies": {
-    "haunted": "^4.5.3",
+    "haunted": "^4.6.2",
     "lit-html": "^1.1.2",
     "masquerades": "0.0.1-alpha.5"
   }
