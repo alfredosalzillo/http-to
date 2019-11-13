@@ -22,6 +22,7 @@ const useCss = (root, css) => {
   useEffect(() => {
     const cssStyleSheet = new CSSStyleSheet();
     cssStyleSheet.insertRule(`@media { ${css} }`);
+    // eslint-disable-next-line no-param-reassign
     root.adoptedStyleSheets = root.adoptedStyleSheets.concat(cssStyleSheet);
   }, []);
 };
