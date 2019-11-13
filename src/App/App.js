@@ -1,11 +1,12 @@
 import {
-  component, useState, useRef, useCallback, useEffect
+  component, useState, useRef, useCallback, useEffect,
 } from 'haunted';
 import styled from 'masquerades';
 import { html } from 'lit-html';
 import { define } from '../html';
 import parseHttp, { toJavascriptFetch, toDartHttp } from '../http/http';
 import CarbonCode from './CarbonCode/CarbonCode';
+import CodeBlock from './CodeBlock/CodeBlock';
 
 const languagesMapping = {
   javascript: toJavascriptFetch,
@@ -16,6 +17,10 @@ const convertTo = (language, code) => languagesMapping[language](parseHttp(code)
 
 define(CarbonCode, {
   name: 'carbon-code',
+});
+
+define(CodeBlock, {
+  name: 'code-block',
 });
 
 define(styled.div`
@@ -42,6 +47,7 @@ define(styled.div`
       padding-top: 2px;
       padding-left: 47px;
       padding-right: 47px;
+      maring-top: 10px;
     }
 
     .footer {
@@ -105,6 +111,16 @@ define(styled.div`
     button {
       float: right;
     }
+  
+    .output-code {
+      display: block;
+      margin: auto;
+      padding-top: 2px;
+      padding-left: 47px;
+      padding-right: 47px;
+      maring-top: 20px;
+      margin-bottom: 20px;
+    }
 `, {
   name: 'app-div',
   extends: 'div',
@@ -134,6 +150,7 @@ define(styled.button`
 
 const exampleHttp = `
 POST https://jsonplaceholder.typicode.com/posts/1
+Authorization: Bearer ${btoa('admin:password')}
 Content-Type: application/json
 
 {
@@ -145,16 +162,16 @@ Content-Type: application/json
 const exampleParsed = toJavascriptFetch(parseHttp(exampleHttp));
 
 export default define(component(() => {
-  const text = useRef(exampleHttp);
-  const onTextareaInput = useCallback((e) => {
-    text.current = e.target.value;
-  }, [text]);
+  const input = useRef(exampleHttp);
+  const onInputChange = useCallback((e) => {
+    input.current = e.getValue();
+  }, [input]);
   const [loading, setLoading] = useState(false);
   const [code, setCode] = useState(exampleParsed);
-  const language = useRef('javascript');
+  const [language, setLanguage] = useState('javascript');
   const onConvert = useCallback(() => {
-    setCode(convertTo(language.current, text.current));
-  }, [setCode, setLoading, language]);
+    setCode(convertTo(language, input.current));
+  }, [setCode, language]);
   useEffect(() => {
     if (code) {
       setLoading(true);
@@ -163,19 +180,29 @@ export default define(component(() => {
   const onCodeLoadComplete = useCallback(() => {
     setLoading(false);
   }, [setLoading]);
-  const onSelectChange = useCallback((e) => {
-    language.current = e.target.value;
-  }, [language]);
+  const onLanguageChange = useCallback((e) => {
+    setLanguage(e.target.value);
+    setCode(convertTo(e.target.value, input.current));
+  }, [language, setCode, input]);
   return html`
     <div is="app-div">
         <h1>HTTP-TO</h1>
         <div class="subtitle">Convert HTTP request to other languages</div>      
         <div class="center">
-            <textarea @input=${onTextareaInput}>${text.current}</textarea>
+             <code-block
+                .code=${input.current} 
+                .language=${'http'}
+                .onChange=${onInputChange}
+            ></code-block>
         </div>
         <div class="bottom">
-            <select @change=${onSelectChange}>
-                ${Object.keys(languagesMapping).map(lan => html`<option .value=${lan} ?selected=${lan === language}>${lan}</option>`)}
+            <select @change=${onLanguageChange}>
+                ${Object.keys(languagesMapping).map(lan => html`
+                        <option 
+                            .value=${lan} 
+                            ?selected=${lan === language}
+                        >${lan}</option>
+                `)}
             </select>
             <button is="fancy-button" 
                 @click=${onConvert} 
@@ -183,12 +210,13 @@ export default define(component(() => {
                 ?disabled=${loading}
              >Convert</button>    
         </div>
-        <div class="output-code">
-            <carbon-code 
+         <div class="output-code">
+            <code-block
                 .code=${code} 
-                .language=${language.current}
+                .language=${language}
+                readonly="true"
                 .onLoad=${onCodeLoadComplete}
-            ></carbon-code>
+            ></code-block>
         </div>
         <div class="footer">
             find on <a href="https://github.com/alfredosalzillo/http-to">github</a>
