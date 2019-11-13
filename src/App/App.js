@@ -149,7 +149,8 @@ define(styled.button`
 });
 
 const exampleHttp = `
-POST https://jsonplaceholder.typicode.com/posts/1
+POST /posts/1
+Host: https://jsonplaceholder.typicode.com
 Authorization: Bearer ${btoa('admin:password')}
 Content-Type: application/json
 
@@ -158,7 +159,7 @@ Content-Type: application/json
   "body": "bar",
   "id": 1
 }
-`;
+`.trimStart();
 const exampleParsed = toJavascriptFetch(parseHttp(exampleHttp));
 
 export default define(component(() => {
