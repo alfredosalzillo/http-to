@@ -149,15 +149,14 @@ define(styled.button`
 });
 
 const exampleHttp = `
-POST /posts/1
-Host: https://jsonplaceholder.typicode.com
-Authorization: Bearer ${btoa('admin:password')}
+POST https://jsonplaceholder.typicode.com/posts/1 HTTP/1.1
+Authorization: Bearer ${btoa(`admin:pwd-${Math.random()}-end`)}
 Content-Type: application/json
 
 {
-  "title": "foo",
-  "body": "bar",
-  "id": 1
+  "id": 1,
+  "title": "Lorem Ipsum",
+  "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lobortis, neque et placerat elementum, nisl ipsum gravida sapien, quis auctor quam lorem sit amet dolor."
 }
 `.trimStart();
 const exampleParsed = toJavascriptFetch(parseHttp(exampleHttp));

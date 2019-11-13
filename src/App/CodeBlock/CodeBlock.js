@@ -36,6 +36,7 @@ const useCodemirror = host => useMemo(() => CodeMirror(host, {
   lineNumbers: true,
   smartIndent: true,
   lineWiseCopyCut: true,
+  lineWrapping: true,
 }), []);
 
 const CodeBlock = ({
