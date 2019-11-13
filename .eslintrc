@@ -1,6 +1,12 @@
 {
   "extends": "airbnb-base",
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module",
+    "allowImportExportEverywhere": true
+  },
   "env": {
+    "es6": true,
     "browser": true,
     "jest": true
   },
@@ -8,7 +14,7 @@
     {
       "files": ["*.js"],
       "rules": {
-        "import/no-extraneous-dependencies": 0
+        "import/no-extraneous-dependencies": 0,
       }
     }
   ],

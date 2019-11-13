@@ -4,12 +4,14 @@ import commonjs from 'rollup-plugin-commonjs';
 import { eslint } from 'rollup-plugin-eslint';
 import serve from 'rollup-plugin-serve';
 import livereload from 'rollup-plugin-livereload';
-import copy from 'rollup-plugin-copy-glob';
+import copy from 'rollup-plugin-copy-glob'
+import importCss from "@atomico/rollup-plugin-import-css";
+
 
 export default ({ watch }) => ({
   input: 'src/main.js',
   output: {
-    file: 'dist/main.js',
+    dir: 'dist',
     format: 'esm',
   },
   plugins: [
@@ -19,6 +21,7 @@ export default ({ watch }) => ({
     // eslint(),
     commonjs(),
     resolve(),
+    importCss(),
     // babel({
     //   externalHelpers: false,
     //   runtimeHelpers: true,
