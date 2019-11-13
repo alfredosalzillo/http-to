@@ -63,7 +63,7 @@ const javascriptBody = (bodyAst) => {
 export const toJavascriptFetch = httpAst => `
 fetch('${httpAst.uri.raw}', {
   method: '${httpAst.method}',
-  headers: ${stringify(Object.fromEntries(httpAst.headers.map(({ name, value }) => [name, value])))},
+  headers: ${stringify(Object.fromEntries(httpAst.headers.map(({ name, value }) => [name, value.trimStart()])))},
   ${httpAst.body.text && `${javascriptBody(httpAst.body)},`}
 })
 `
@@ -80,7 +80,7 @@ const dartBody = (bodyAst) => {
 };
 export const toDartHttp = httpAst => `
 http.${httpAst.method.toLowerCase()}('${httpAst.uri.raw}',
-  headers: ${stringify(Object.fromEntries(httpAst.headers.map(({ name, value }) => [name, value])))}${
+  headers: ${stringify(Object.fromEntries(httpAst.headers.map(({ name, value }) => [name, value.trimStart()])))}${
   httpAst.body.text && ','
 }
   ${httpAst.body.text && `${dartBody(httpAst.body)}`}
