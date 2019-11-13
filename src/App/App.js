@@ -149,7 +149,7 @@ define(styled.button`
 });
 
 const exampleHttp = `
-POST https://jsonplaceholder.typicode.com/posts/1 HTTP/1.1
+POST https://jsonplaceholder.typicode.com/posts HTTP/1.1
 Authorization: Bearer ${btoa(`admin:pwd-${Math.random()}-end`)}
 Content-Type: application/json
 
