@@ -28,7 +28,6 @@ const importLanguage = (language) => {
  * */
 const useCodemirror = host => useMemo(() => CodeMirror(host, {
   theme: 'material-palenight',
-  lineNumbers: true,
   smartIndent: true,
   lineWiseCopyCut: true,
   lineWrapping: true,
