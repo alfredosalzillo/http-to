@@ -4,8 +4,10 @@ import {
 import styled from 'masquerades';
 import { html } from 'lit-html';
 import { define } from '../html';
-import parseHttp, { toJavascriptFetch, toDartHttp } from '../http/http';
+import parseHttp from '../http/http';
 import CodeBlock from './CodeBlock/CodeBlock';
+import toJavascriptFetch from '../http/converters/toJavascriptFetch';
+import toDartHttp from '../http/converters/toDartHttp';
 
 const languagesMapping = {
   javascript: toJavascriptFetch,
