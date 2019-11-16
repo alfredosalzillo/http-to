@@ -15,7 +15,7 @@ const languagesMapping = {
   dart: toDartHttp,
 };
 
-const convertTo = (language, code) => languagesMapping[language](parseHttp(code));
+const convertTo = (language, code) => parseHttp(code) |> languagesMapping[language];
 
 define(CodeBlock, {
   name: 'code-block',

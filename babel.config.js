@@ -1,9 +1,5 @@
 module.exports = {
-  presets: [
-    'airbnb', [
-      '@babel/preset-env',
-      {
-        useBuiltIns: false,
-      },
-    ]],
+  plugins: [
+    '@babel/plugin-syntax-dynamic-import',
+    ['@babel/plugin-proposal-pipeline-operator', { proposal: 'fsharp' }]],
 };

@@ -19,13 +19,13 @@ export default ({ watch }) => ({
       { files: 'static/*.{html,css}', dest: 'dist' },
     ]),
     // eslint(),
+    babel({
+      externalHelpers: false,
+      runtimeHelpers: true,
+    }),
     commonjs(),
     resolve(),
     importCss(),
-    // babel({
-    //   externalHelpers: false,
-    //   runtimeHelpers: true,
-    // }),
     watch && serve({
       contentBase: ['./dist', './static'],
     }),
