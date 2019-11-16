@@ -4,6 +4,8 @@ import {
 import CodeMirror from 'codemirror';
 import codemirrorCss from 'codemirror/lib/codemirror.css';
 import themeCss from 'codemirror/theme/material-palenight.css';
+import 'codemirror/addon/scroll/simplescrollbars';
+import scrollCss from 'codemirror/addon/scroll/simplescrollbars.css';
 
 const importLanguage = (language) => {
   switch (language) {
@@ -37,6 +39,7 @@ const useCodemirror = host => useMemo(() => CodeMirror(host, {
   smartIndent: true,
   lineWiseCopyCut: true,
   lineWrapping: true,
+  scrollbarStyle: 'overlay',
 }), []);
 
 const CodeBlock = ({
@@ -49,6 +52,7 @@ const CodeBlock = ({
 }) => {
   useCss(shadowRoot, codemirrorCss);
   useCss(shadowRoot, themeCss);
+  useCss(shadowRoot, scrollCss);
   const host = useMemo(() => document.createElement('div'), []);
   const codemirror = useCodemirror(host);
   useEffect(() => {
