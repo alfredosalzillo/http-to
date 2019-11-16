@@ -1,5 +1,5 @@
 import {
-  component, useState, useRef, useCallback, useEffect,
+  component, useState, useRef, useCallback, useEffect, useMemo,
 } from 'haunted';
 import styled from 'masquerades';
 import { html } from 'lit-html';
@@ -8,6 +8,7 @@ import parseHttp from '../http/http';
 import CodeBlock from './CodeBlock/CodeBlock';
 import toJavascriptFetch from '../http/converters/toJavascriptFetch';
 import toDartHttp from '../http/converters/toDartHttp';
+import useSavedState from './hooks/useSavedState';
 
 const languagesMapping = {
   javascript: toJavascriptFetch,
@@ -128,7 +129,6 @@ Content-Type: application/json
   "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris lobortis, neque et placerat elementum, nisl ipsum gravida sapien, quis auctor quam lorem sit amet dolor."
 }
 `.trimStart();
-const exampleParsed = toJavascriptFetch(parseHttp(exampleHttp));
 
 export default define(component(() => {
   const input = useRef(exampleHttp);
@@ -136,11 +136,11 @@ export default define(component(() => {
     input.current = e.getValue();
   }, [input]);
   const [loading, setLoading] = useState(false);
-  const [code, setCode] = useState(exampleParsed);
-  const [language, setLanguage] = useState('javascript');
+  const [language, setLanguage] = useSavedState('language', 'javascript');
+  const [code, setCode] = useState(useMemo(() => convertTo(language, exampleHttp), []));
   const onConvert = useCallback(() => {
     setCode(convertTo(language, input.current));
-  }, [setCode, language]);
+  }, [setCode, language, input]);
   useEffect(() => {
     if (code) {
       setLoading(true);
@@ -151,8 +151,8 @@ export default define(component(() => {
   }, [setLoading]);
   const onLanguageChange = useCallback((e) => {
     setLanguage(e.target.value);
-    setCode(convertTo(e.target.value, input.current));
   }, [language, setCode, input]);
+  useEffect(() => onConvert(), [language]);
   return html`
     <div is="app-div">
         <h1>HTTP-TO</h1>
