@@ -4,8 +4,8 @@
 
 .root .action-container {
     position: absolute;
-    top: 0.2rem;
-    right: 0.2rem;
+    top: 0.25rem;
+    right: 0.3rem;
     opacity: 0;
     transition: opacity 300ms;
 }
@@ -32,4 +32,9 @@
 
 .root .action-container .action[disabled] {
     color: rgb(195, 232, 141);
+}
+
+.root .CodeMirror {
+    padding: 0.5rem;
+    border-radius: 0.2rem;
 }
