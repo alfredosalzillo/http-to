@@ -4,8 +4,8 @@ import commonjs from 'rollup-plugin-commonjs';
 import { eslint } from 'rollup-plugin-eslint';
 import serve from 'rollup-plugin-serve';
 import livereload from 'rollup-plugin-livereload';
-import copy from 'rollup-plugin-copy-glob'
-import importCss from "@atomico/rollup-plugin-import-css";
+import copy from 'rollup-plugin-copy-glob';
+import importCss from '@atomico/rollup-plugin-import-css';
 
 
 export default ({ watch }) => ({
