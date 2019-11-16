@@ -30,22 +30,20 @@ define(styled.div`
     max-width: 800px;
     margin: auto;
     padding: 1rem;
-
-    .top,
-    .bottom,
-    .center,
+    
+    .toolbar,
     .footer {
       font-family: Hack, monospace !important;
       color: white;
       display: block;
-      margin: auto;
       padding-top: 2px;
       padding-left: 47px;
       padding-right: 47px;
-      maring-top: 10px;
+      margin: auto auto;
     }
 
     .footer {
+      margin-top: 20px;
       text-align: center;
       font-size: 12px;
 
@@ -80,41 +78,15 @@ define(styled.div`
       border-radius: 3px;
     }
 
-    textarea {
-      resize: none;
-      display: block;
-      background-color: #282a36;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      width: calc(100% - 40px);
-      min-height: 200px;
-      padding: 20px;
-      margin: auto;
-      font-size: 14px;
-      line-height: 133%;
-      font-variant-ligatures: contextual;
-      font-feature-settings: "calt";
-      user-select: none;
-      font-family: Hack, monospace !important;
-    }
-
-    textarea:focus, select:focus {
-      outline: 0;
-    }
-
     button {
       float: right;
     }
   
-    .output-code {
+    .code-container {
       display: block;
-      margin: auto;
       padding-top: 2px;
       padding-left: 47px;
       padding-right: 47px;
-      maring-top: 20px;
-      margin-bottom: 20px;
     }
 `, {
   name: 'app-div',
@@ -129,7 +101,7 @@ define(styled.button`
     font-family: Hack, monospace !important;
     border: none;
     color: white;
-    text-transform: lowercase;
+    text-transform: uppercase;
     cursor: pointer;
     transition: 0.2s ease-in-out;
     border-radius: 3px;
@@ -183,14 +155,14 @@ export default define(component(() => {
     <div is="app-div">
         <h1>HTTP-TO</h1>
         <div class="subtitle">Convert HTTP request to other languages</div>      
-        <div class="center">
+        <div class="code-container">
              <code-block
+                language="http"
                 .code=${input.current} 
-                .language=${'http'}
                 .onChange=${onInputChange}
             ></code-block>
         </div>
-        <div class="bottom">
+        <div class="toolbar">
             <select @change=${onLanguageChange}>
                 ${Object.keys(languagesMapping).map(lan => html`
                         <option 
@@ -205,7 +177,7 @@ export default define(component(() => {
                 ?disabled=${loading}
              >Convert</button>    
         </div>
-         <div class="output-code">
+         <div class="code-container">
             <code-block
                 .code=${code} 
                 .language=${language}
