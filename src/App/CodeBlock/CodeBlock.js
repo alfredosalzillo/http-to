@@ -1,11 +1,12 @@
 import {
-  component, useEffect, useMemo,
+  component, html, useCallback, useEffect, useMemo,
 } from 'haunted';
 import CodeMirror from 'codemirror';
 import codemirrorCss from 'codemirror/lib/codemirror.css';
 import themeCss from 'codemirror/theme/material-palenight.css';
 import 'codemirror/addon/scroll/simplescrollbars';
 import scrollCss from 'codemirror/addon/scroll/simplescrollbars.css';
+import style from './CodeBlook.css';
 import useCss from '../hooks/useCss';
 
 const importLanguage = (language) => {
@@ -41,6 +42,7 @@ const CodeBlock = ({
   onLoad = () => null,
   onChange = () => null,
 }) => {
+  useCss(style);
   useCss(codemirrorCss);
   useCss(themeCss);
   useCss(scrollCss);
@@ -60,7 +62,15 @@ const CodeBlock = ({
   useEffect(() => {
     codemirror.setOption('readOnly', readonly);
   }, [readonly]);
-  return host;
+  const onCopy = useCallback(() => navigator.clipboard.writeText(code), [code]);
+  return html`
+    <div class="root">
+        <div class="action-container">
+            <button class="action" @click=${onCopy}>Copy</button>
+        </div>
+        ${host}
+    </div>
+  `;
 };
 
 CodeBlock.observedAttributes = ['code', 'language', 'readonly', 'onLoad', 'onChange'];
