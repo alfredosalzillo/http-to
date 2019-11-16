@@ -1,5 +1,5 @@
 import {
-  component, html, useCallback, useEffect, useMemo,
+  component, html, useCallback, useEffect, useMemo, useState,
 } from 'haunted';
 import CodeMirror from 'codemirror';
 import codemirrorCss from 'codemirror/lib/codemirror.css';
@@ -62,11 +62,19 @@ const CodeBlock = ({
   useEffect(() => {
     codemirror.setOption('readOnly', readonly);
   }, [readonly]);
-  const onCopy = useCallback(() => navigator.clipboard.writeText(code), [code]);
+  const [copied, setCopied] = useState(false);
+  const onCopy = useCallback(() => navigator.clipboard
+    .writeText(code)
+    .then(() => setCopied(true))
+    .then(() => setTimeout(() => setCopied(false), 1500)), [code]);
   return html`
     <div class="root">
         <div class="action-container">
-            <button class="action" @click=${onCopy}>Copy</button>
+            <button 
+                class="action" 
+                @click=${onCopy}
+                ?disabled=${copied}
+            >${copied ? 'Copied' : 'Copy'}</button>
         </div>
         ${host}
     </div>
