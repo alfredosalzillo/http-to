@@ -1,6 +1,6 @@
 import { stringify } from './utils';
 
-const javascriptBody = ({ contentType, value, text }) => {
+const writeBody = ({ contentType, value, text }) => {
   switch (contentType.trim().toLocaleLowerCase()) {
     case 'application/json':
       return `body: JSON.stringify(${stringify(value)})`;
@@ -9,7 +9,11 @@ const javascriptBody = ({ contentType, value, text }) => {
   }
 };
 
-const toJavascriptFetch = ({
+const writeHeaders = headers => headers
+  .map(({ name, value }) => [name, value.trimStart()]) |> Object.fromEntries
+  |> stringify;
+
+export default ({
   method,
   uri,
   headers,
@@ -17,11 +21,9 @@ const toJavascriptFetch = ({
 }) => `
 fetch('${uri.raw}', {
   method: '${method}',
-  headers: ${stringify(Object.fromEntries(headers.map(({ name, value }) => [name, value.trimStart()])))},
-  ${body.text && `${javascriptBody(body)},`}
+  headers: ${writeHeaders(headers)},
+  ${body.text && `${writeBody(body)},`}
 })
 `
   .replace(/^\n*/, '')
   .replace(/\n*$/, '');
-
-export default toJavascriptFetch;

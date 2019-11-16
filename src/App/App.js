@@ -137,7 +137,7 @@ export default define(component(() => {
   }, [input]);
   const [loading, setLoading] = useState(false);
   const [language, setLanguage] = useSavedState('language', 'javascript');
-  const [code, setCode] = useState(useMemo(() => convertTo(language, exampleHttp), []));
+  const [code, setCode] = useMemo(() => convertTo(language, exampleHttp), []) |> useState;
   const onConvert = useCallback(() => {
     setCode(convertTo(language, input.current));
   }, [setCode, language, input]);

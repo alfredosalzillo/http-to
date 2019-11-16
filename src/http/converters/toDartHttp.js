@@ -1,6 +1,6 @@
 import { stringify } from './utils';
 
-const dartBody = ({ contentType, value, text }) => {
+const writeBody = ({ contentType, value, text }) => {
   switch (contentType.trim().toLocaleLowerCase()) {
     case 'application/json':
       return `body: json.encode(${stringify(value)})`;
@@ -8,7 +8,13 @@ const dartBody = ({ contentType, value, text }) => {
       return `body: '${text}'`;
   }
 };
-const toDartHttp = ({
+
+
+const writeHeader = headers => headers
+  .map(({ name, value }) => [name, value.trimStart()]) |> Object.fromEntries
+  |> stringify;
+
+export default ({
   method,
   uri,
   headers,
@@ -18,13 +24,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 http.${method.toLowerCase()}('${uri.raw}',
-  headers: ${stringify(Object.fromEntries(headers.map(({ name, value }) => [name, value.trimStart()])))}${
-  body.text && ','
-}
-  ${body.text && `${dartBody(body)}`}
+  headers: ${writeHeader(headers)}${body.text && ','}
+  ${body.text && `${writeBody(body)}`}
 );
 `
   .replace(/^\n*/, '')
   .replace(/\n*$/, '');
-
-export default toDartHttp;

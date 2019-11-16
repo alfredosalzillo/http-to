@@ -7,9 +7,14 @@ const parseUri = uri => ({
   url: uri.match(/^(?<url>[^?]*)/).groups.url,
 });
 const parseRequest = (request) => {
-  const { method, uri } = request.match(/^(?<method>[^ ]*) *(?<uri>[^ ]*)/).groups;
+  const {
+    method,
+    uri,
+    version = '1.1',
+  } = request.match(/^(?<method>[^ ]*) *(?<uri>[^ ]*) *HTTP\/(?<version>.*)/).groups;
   return {
     method,
+    version,
     uri: parseUri(uri),
     type: 'request',
   };
@@ -24,7 +29,10 @@ const parseBody = (body, headers) => {
   switch (contentType.trim().toLowerCase()) {
     case 'application/json':
       return {
-        type: 'body', contentType, value: JSON.parse(body), text: body,
+        contentType,
+        type: 'body',
+        value: JSON.parse(body),
+        text: body,
       };
     case 'application/x-www-form-urlencoded':
     default:
@@ -39,7 +47,7 @@ const parse = (http) => {
   const [headersLines, ...bodyLines] = others.join('\n').split('\n\n');
   const request = parseRequest(requestLine);
   const headers = parseHeaders(headersLines);
-  const body = parseBody(bodyLines.join('\n'), headers);
+  const body = bodyLines.join('\n') |> (_ => parseBody(_, headers));
   return {
     ...request,
     headers,
