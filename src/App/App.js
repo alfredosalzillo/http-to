@@ -5,7 +5,6 @@ import styled from 'masquerades';
 import { html } from 'lit-html';
 import { define } from '../html';
 import parseHttp, { toJavascriptFetch, toDartHttp } from '../http/http';
-import CarbonCode from './CarbonCode/CarbonCode';
 import CodeBlock from './CodeBlock/CodeBlock';
 
 const languagesMapping = {
@@ -14,10 +13,6 @@ const languagesMapping = {
 };
 
 const convertTo = (language, code) => languagesMapping[language](parseHttp(code));
-
-define(CarbonCode, {
-  name: 'carbon-code',
-});
 
 define(CodeBlock, {
   name: 'code-block',
