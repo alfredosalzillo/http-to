@@ -10,6 +10,9 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
 
+    - name: Cache
+      uses: actions/cache@v1.0.0
+      
     - name: Build and Deploy
       uses: JamesIves/github-pages-deploy-action@releases/v3
       env:
@@ -17,3 +20,4 @@ jobs:
         BRANCH: gh-pages
         FOLDER: dist
         BUILD_SCRIPT: npm install && npm run build
+
