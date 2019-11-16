@@ -6,6 +6,7 @@ import codemirrorCss from 'codemirror/lib/codemirror.css';
 import themeCss from 'codemirror/theme/material-palenight.css';
 import 'codemirror/addon/scroll/simplescrollbars';
 import scrollCss from 'codemirror/addon/scroll/simplescrollbars.css';
+import useCss from '../hooks/useCss';
 
 const importLanguage = (language) => {
   switch (language) {
@@ -18,15 +19,6 @@ const importLanguage = (language) => {
     default:
       throw new Error(`language ${language} not supported`);
   }
-};
-
-const useCss = (root, css) => {
-  useEffect(() => {
-    const cssStyleSheet = new CSSStyleSheet();
-    cssStyleSheet.insertRule(`@media { ${css} }`);
-    // eslint-disable-next-line no-param-reassign
-    root.adoptedStyleSheets = root.adoptedStyleSheets.concat(cssStyleSheet);
-  }, []);
 };
 
 /**
@@ -48,11 +40,10 @@ const CodeBlock = ({
   readonly = false,
   onLoad = () => null,
   onChange = () => null,
-  shadowRoot,
 }) => {
-  useCss(shadowRoot, codemirrorCss);
-  useCss(shadowRoot, themeCss);
-  useCss(shadowRoot, scrollCss);
+  useCss(codemirrorCss);
+  useCss(themeCss);
+  useCss(scrollCss);
   const host = useMemo(() => document.createElement('div'), []);
   const codemirror = useCodemirror(host);
   useEffect(() => {
