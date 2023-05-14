@@ -1,22 +1,51 @@
 {
-  "extends": "airbnb-base",
-  "parser": "babel-eslint",
-  "parserOptions": {
-    "sourceType": "module",
-    "allowImportExportEverywhere": true
-  },
-  "env": {
-    "es6": true,
-    "browser": true,
-    "jest": true
-  },
-  "overrides": [
-    {
-      "files": ["*.js"],
-      "rules": {
-        "import/no-extraneous-dependencies": 0,
-      }
-    }
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "airbnb",
+    "next",
+    "plugin:@typescript-eslint/recommended",
+    "next/core-web-vitals"
   ],
-  "plugins": ["jest"]
+  "rules": {
+    "react/jsx-no-useless-fragment": 0,
+    "react/function-component-definition": 0,
+    "react/require-default-props": 0,
+    "react/jsx-props-no-spreading": 0,
+    "no-restricted-exports": "off",
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".js",
+          ".tsx"
+        ]
+      }
+    ],
+    "import/extensions": [
+      "error",
+      {
+        "tsx": 0
+      }
+    ],
+    "import/order": [
+      "error",
+      {
+        "newlines-between": "always",
+        "pathGroupsExcludedImportTypes": [
+          "builtin"
+        ],
+        "groups": [
+          "external",
+          "type",
+          "internal",
+          "index",
+          "parent",
+          "sibling",
+          "builtin",
+          "object"
+        ]
+      }
+    ],
+    "@typescript-eslint/consistent-type-imports": "error"
+  }
 }
