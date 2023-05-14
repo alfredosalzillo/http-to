@@ -1,6 +1,8 @@
+import type { BodyToken, HeaderToken, HttpRequestToken } from '../http';
+
 import { stringify } from './utils';
 
-const writeBody = ({ contentType, value, text }) => {
+const writeBody = ({ contentType, value, text }: BodyToken) => {
   switch (contentType.trim().toLocaleLowerCase()) {
     case 'application/json':
       return `body: JSON.stringify(${stringify(value)})`;
@@ -9,16 +11,16 @@ const writeBody = ({ contentType, value, text }) => {
   }
 };
 
-const writeHeaders = headers => headers
-  .map(({ name, value }) => [name, value.trimStart()]) |> Object.fromEntries
-  |> stringify;
+const writeHeaders = (headers: HeaderToken[]) => stringify(Object
+  .fromEntries(headers
+    .map(({ name, value }) => [name, value.trimStart()])));
 
-export default ({
+const toJavascriptFetch = ({
   method,
   uri,
   headers,
   body,
-}) => `
+}: HttpRequestToken) => `
 fetch('${uri.raw}', {
   method: '${method}',
   headers: ${writeHeaders(headers)},
@@ -27,3 +29,5 @@ fetch('${uri.raw}', {
 `
   .replace(/^\n*/, '')
   .replace(/\n*$/, '');
+
+export default toJavascriptFetch;
