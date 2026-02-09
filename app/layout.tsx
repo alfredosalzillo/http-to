@@ -11,8 +11,37 @@ import Header from "@/components/Header";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "HTTP-TO - Online HTTP request converter",
-  description: "Convert HTTP requests to javascript fetch, dart request",
+  title: "HTTP-TO | Online HTTP Request Converter",
+  description:
+    "Convert raw HTTP requests to clean JavaScript Fetch code instantly. A fast, free, and secure online tool for developers to generate request snippets.",
+  keywords: [
+    "HTTP converter",
+    "HTTP to Fetch",
+    "request converter",
+    "API development",
+    "JavaScript Fetch",
+    "online tool",
+  ],
+  authors: [{ name: "Alfredo Salzillo" }],
+  openGraph: {
+    title: "HTTP-TO | Online HTTP Request Converter",
+    description:
+      "Convert raw HTTP requests to clean JavaScript Fetch code instantly. A fast, free, and secure online tool for developers.",
+    url: "https://http-to.com",
+    siteName: "HTTP-TO",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "HTTP-TO | Online HTTP Request Converter",
+    description:
+      "Convert raw HTTP requests to clean JavaScript Fetch code instantly. A fast, free, and secure online tool for developers.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => (
