@@ -1,9 +1,11 @@
 import type React from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { Box, Container, Link, Typography } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import MUIConfig from "./MUIConfig";
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,37 +25,13 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => (
             sx={{
               display: "flex",
               flexDirection: "column",
-              justifyContent: "space-between",
               alignItems: "center",
-              gap: 3,
-              py: 3,
               minHeight: "100vh",
             }}
           >
-            <Box component="header" sx={{ textAlign: "center" }}>
-              <Typography
-                variant="h3"
-                component="h1"
-                gutterBottom
-                sx={{ fontWeight: "bold" }}
-              >
-                HTTP-TO
-              </Typography>
-              <Typography variant="subtitle1">
-                HTTP request converter
-              </Typography>
-            </Box>
-            <Box sx={{ width: "100%" }}>{children}</Box>
-            <Box component="footer">
-              <Link
-                href="https://github.com/alfredosalzillo/http-to"
-                underline="hover"
-                color="inherit"
-                target="_blank"
-              >
-                github
-              </Link>
-            </Box>
+            <Header />
+            <Box sx={{ width: "100%", flex: 1 }}>{children}</Box>
+            <Footer />
           </Container>
         </MUIConfig>
       </AppRouterCacheProvider>

@@ -13,15 +13,8 @@ const CopyButton: React.FC<CopyButtonProps> = ({ value, sx, ...props }) => {
   const [status, setStatus] = useState<"idle" | "waiting" | "done">("idle");
   return (
     <Button
-      variant="contained"
       disabled={status !== "idle"}
-      size="small"
       startIcon={status === "done" ? <CheckIcon /> : <ContentCopyIcon />}
-      sx={{
-        borderRadius: "12px",
-        minWidth: "100px",
-        ...sx,
-      }}
       {...props}
       onClick={async () => {
         setStatus("waiting");

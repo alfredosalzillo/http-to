@@ -1,7 +1,15 @@
 "use client";
 
 import { useCallback } from "react";
-import { Alert, Box, FormControl, MenuItem, Select } from "@mui/material";
+import {
+  Alert,
+  Box,
+  FormControl,
+  MenuItem,
+  Select,
+  Stack,
+  Toolbar,
+} from "@mui/material";
 import dedent from "dedent";
 import CopyButton from "@/components/CopyButton";
 import useLocalStorageState from "@/hooks/useLocalStorageState";
@@ -64,65 +72,82 @@ const useConvertedValue = (initialValue: string): UseConvertedValueReturn => {
 const Converter = () => {
   const [{ raw, value, error }, update] = useConvertedValue(defaultHttp);
   return (
-    <Box sx={{ width: "100%" }}>
-      <Box
-        sx={{
-          borderSize: 1,
-          borderColor: "divider",
-          borderStyle: "solid",
-          borderRadius: 2,
-          overflow: "hidden",
-          height: 300,
-        }}
-      >
-        <CodeBlock
-          editable
-          initialValue={raw}
-          onChange={update}
-          language={http()}
-        />
-      </Box>
-      <Box
+    <Box
+      sx={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        gap: 1,
+      }}
+    >
+      <Toolbar
+        disableGutters
         sx={{
           display: "flex",
-          py: 2,
           justifyContent: "space-between",
           alignItems: "center",
-          gap: 2,
+          gap: 1,
         }}
       >
-        <FormControl size="small" sx={{ minWidth: 120 }}>
-          <Select value="Javascript" disabled>
-            <MenuItem value="Javascript">Javascript</MenuItem>
-          </Select>
-        </FormControl>
-        {error && (
-          <Alert severity="error" sx={{ py: 0, px: 1 }}>
-            {error.message}
-          </Alert>
-        )}
-      </Box>
-      <Box
-        sx={{
-          position: "relative",
-          borderSize: 1,
-          borderColor: "divider",
-          borderStyle: "solid",
-          borderRadius: 2,
-          overflow: "hidden",
-          height: 300,
-        }}
-      >
-        <CodeBlock value={value} language={javascript()} />
-        <CopyButton
-          value={value}
+        <Box flex={1}>
+          {error && <Alert severity="error">{error.message}</Alert>}
+        </Box>
+        <Box
+          flex={1}
           sx={{
-            position: "absolute",
-            right: 8,
-            top: 8,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            gap: 1,
           }}
-        />
-      </Box>
+        >
+          <FormControl size="small" sx={{ minWidth: 120 }}>
+            <Select value="Javascript" disabled>
+              <MenuItem value="Javascript">Javascript</MenuItem>
+            </Select>
+          </FormControl>
+          <CopyButton variant="outlined" value={value} />
+        </Box>
+      </Toolbar>
+      <Stack gap={1} flexDirection="row">
+        <Box
+          sx={{
+            border: 1,
+            borderColor: "divider",
+            borderStyle: "solid",
+            borderRadius: 2,
+            overflow: "hidden",
+            height: 300,
+            boxShadow: 1,
+            transition: "border-color 0.2s",
+            "&:focus-within": {
+              borderColor: "primary.main",
+            },
+          }}
+        >
+          <CodeBlock
+            editable
+            initialValue={raw}
+            onChange={update}
+            language={http()}
+          />
+        </Box>
+        <Box
+          sx={{
+            position: "relative",
+            border: 1,
+            borderColor: "divider",
+            borderStyle: "solid",
+            borderRadius: 2,
+            overflow: "hidden",
+            height: 300,
+            boxShadow: 1,
+          }}
+        >
+          <CodeBlock value={value} language={javascript()} />
+        </Box>
+      </Stack>
     </Box>
   );
 };

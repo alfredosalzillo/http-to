@@ -10,10 +10,11 @@ import { basicSetup } from "codemirror";
 const customTheme = EditorView.theme(
   {
     "&": {
-      borderRadius: "0px",
-      padding: "8px 4px",
+      borderRadius: 0,
+      padding: "4px 4px",
       overflow: "auto",
-      height: "300px",
+      height: "100%",
+      minHeight: "300px",
     },
     ".cm-editor": {},
   },
