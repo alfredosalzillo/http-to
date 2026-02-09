@@ -2,7 +2,6 @@
 
 import { useCallback } from "react";
 import {
-  Alert,
   Box,
   FormControl,
   MenuItem,
@@ -12,6 +11,7 @@ import {
 } from "@mui/material";
 import dedent from "dedent";
 import CopyButton from "@/components/CopyButton";
+import ErrorPopover from "@/components/ErrorPopover";
 import useLocalStorageState from "@/hooks/useLocalStorageState";
 import CodeBlock from "@/plugins/code-block";
 import http from "@/plugins/code-block/languages/http";
@@ -71,6 +71,7 @@ const useConvertedValue = (initialValue: string): UseConvertedValueReturn => {
 };
 const Converter = () => {
   const [{ raw, value, error }, update] = useConvertedValue(defaultHttp);
+
   return (
     <Box
       sx={{
@@ -90,9 +91,7 @@ const Converter = () => {
           gap: 1,
         }}
       >
-        <Box flex={1}>
-          {error && <Alert severity="error">{error.message}</Alert>}
-        </Box>
+        <Box flex={1}>{error && <ErrorPopover error={error} />}</Box>
         <Box
           flex={1}
           sx={{
