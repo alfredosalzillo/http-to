@@ -109,7 +109,7 @@ const Converter = () => {
           <CopyButton variant="outlined" value={value} />
         </Box>
       </Toolbar>
-      <Stack gap={1} flexDirection="row">
+      <Stack gap={1} flexDirection="row" sx={{ flex: 1, minHeight: 0 }}>
         <Box
           sx={{
             border: 1,
@@ -117,7 +117,8 @@ const Converter = () => {
             borderStyle: "solid",
             borderRadius: 2,
             overflow: "hidden",
-            height: 300,
+            height: 400,
+            minHeight: 400,
             boxShadow: 1,
             transition: "border-color 0.2s",
             "&:focus-within": {
@@ -140,7 +141,8 @@ const Converter = () => {
             borderStyle: "solid",
             borderRadius: 2,
             overflow: "hidden",
-            height: 300,
+            height: 400,
+            minHeight: 400,
             boxShadow: 1,
           }}
         >

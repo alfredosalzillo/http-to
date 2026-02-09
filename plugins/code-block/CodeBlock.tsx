@@ -14,7 +14,7 @@ const customTheme = EditorView.theme(
       padding: "4px 4px",
       overflow: "auto",
       height: "100%",
-      minHeight: "300px",
+      minHeight: "400px",
     },
     ".cm-editor": {},
   },
