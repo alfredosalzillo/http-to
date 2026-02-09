@@ -1,7 +1,7 @@
 const parseParams = (uri: string) =>
-  [...uri.matchAll(/[?&]((?<name>[^=&]*)=(?<value>[^&]*))/gi)].map(
-    (res) => res.groups!,
-  );
+  [...uri.matchAll(/[?&]((?<name>[^=&]*)=(?<value>[^&]*))/gi)]
+    // biome-ignore lint/style/noNonNullAssertion: allowed
+    .map((res) => res.groups!);
 const parseUrlEncoded = (value: string) =>
   [...value.matchAll(/[&]?((?<name>[^=&]*)=(?<value>[^&]*))/gi)].map(
     (res) => res.groups,
@@ -17,6 +17,7 @@ const parseUri = (uri: string): UriToken => ({
   type: "uri",
   raw: uri,
   params: parseParams(uri),
+  // biome-ignore lint/style/noNonNullAssertion: allowed
   url: uri.match(/^(?<url>[^?]*)/)!.groups!.url!,
 });
 
@@ -31,6 +32,7 @@ const parseRequest = (request: string): RequestToken => {
     method,
     uri,
     version = "1.1",
+    // biome-ignore lint/style/noNonNullAssertion: allowed
   } = request.match(/^(?<method>[^ ]*) *(?<uri>[^ ]*) *HTTP\/(?<version>.*)/)!
     .groups as { method: string; uri: string; version: string };
   return {
@@ -48,6 +50,7 @@ export type HeaderToken = {
 };
 const parseHeaders = (headers: string): HeaderToken[] =>
   headers.split("\n").map((header) => ({
+    // biome-ignore lint/style/noNonNullAssertion: allowed
     ...(header.match(/^(?<name>[^:]*):(?<value>.*)$/)!.groups as {
       name: string;
       value: string;
@@ -58,6 +61,7 @@ const parseHeaders = (headers: string): HeaderToken[] =>
 export type BodyToken = {
   contentType: string;
   type: "body";
+  // biome-ignore lint/suspicious/noExplicitAny: allowed
   value: any;
   text: string;
 };
@@ -74,7 +78,6 @@ const parseBody = (body: string, headers: HeaderToken[]): BodyToken => {
         value: JSON.parse(body),
         text: body,
       };
-    case "application/x-www-form-urlencoded":
     default:
       return {
         contentType,

@@ -2,27 +2,27 @@
 
 import type React from "react";
 import { useState } from "react";
-import clsx from "clsx";
-import classes from "./CopyButton.module.scss";
+import CheckIcon from "@mui/icons-material/Check";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { Button, type ButtonProps } from "@mui/material";
 
-export type CopyButtonProps = React.DetailedHTMLProps<
-  React.ButtonHTMLAttributes<HTMLButtonElement>,
-  HTMLButtonElement
-> & {
+export type CopyButtonProps = ButtonProps & {
   value: string;
 };
-const CopyButton: React.FC<CopyButtonProps> = ({
-  value,
-  className,
-  ...props
-}) => {
+const CopyButton: React.FC<CopyButtonProps> = ({ value, sx, ...props }) => {
   const [status, setStatus] = useState<"idle" | "waiting" | "done">("idle");
   return (
-    <button
-      type="button"
+    <Button
+      variant="contained"
       disabled={status !== "idle"}
+      size="small"
+      startIcon={status === "done" ? <CheckIcon /> : <ContentCopyIcon />}
+      sx={{
+        borderRadius: "12px",
+        minWidth: "100px",
+        ...sx,
+      }}
       {...props}
-      className={clsx(classes.root, className)}
       onClick={async () => {
         setStatus("waiting");
         await navigator.clipboard.writeText(value);
@@ -32,10 +32,8 @@ const CopyButton: React.FC<CopyButtonProps> = ({
         }, 1000);
       }}
     >
-      {status === "done" && "COPIED"}
-      {status === "idle" && "COPY"}
-      {status === "waiting" && "COPY"}
-    </button>
+      {status === "done" ? "COPIED" : "COPY"}
+    </Button>
   );
 };
 

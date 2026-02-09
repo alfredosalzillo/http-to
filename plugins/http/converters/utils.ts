@@ -1,3 +1,2 @@
-// eslint-disable-next-line import/prefer-default-export
-export const stringify = (thigh: any) =>
+export const stringify = (thigh: unknown) =>
   JSON.stringify(thigh, null, 4).replace(/}$/, "  }");

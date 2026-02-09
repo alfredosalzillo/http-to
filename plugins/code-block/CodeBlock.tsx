@@ -10,7 +10,7 @@ import { basicSetup } from "codemirror";
 const customTheme = EditorView.theme(
   {
     "&": {
-      borderRadius: "12px",
+      borderRadius: "0px",
       padding: "8px 4px",
       overflow: "auto",
       height: "300px",
@@ -67,7 +67,7 @@ export type CodeBlockProps = {
   value?: string;
   onChange?: ChangeHandler;
 } & Omit<DivProps, "onChange">;
-// eslint-disable-next-line react/display-name
+
 const CodeBlock = forwardRef<CodeBlockController | undefined, CodeBlockProps>(
   ({ language, initialValue, editable, value, onChange, ...props }, ref) => {
     const root = useRef<HTMLDivElement>(null);
@@ -76,7 +76,7 @@ const CodeBlock = forwardRef<CodeBlockController | undefined, CodeBlockProps>(
     useEffect(() => {
       if (editor.current) return;
       if (!root.current) return;
-      const view = new EditorView({
+      editor.current = new EditorView({
         extensions: [
           setup,
           language,
@@ -90,8 +90,6 @@ const CodeBlock = forwardRef<CodeBlockController | undefined, CodeBlockProps>(
         parent: root.current,
         doc: initialValue ?? "",
       });
-      // @ts-expect-error
-      editor.current = view;
     }, [initialValue, editable, language, changeRef]);
     useEffect(() => {
       if (value === undefined) return;

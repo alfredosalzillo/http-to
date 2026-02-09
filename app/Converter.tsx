@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useCallback } from "react";
+import { useCallback } from "react";
+import { Alert, Box, FormControl, MenuItem, Select } from "@mui/material";
 import dedent from "dedent";
-import classes from "./Convert.module.scss";
 import CopyButton from "@/components/CopyButton";
 import useLocalStorageState from "@/hooks/useLocalStorageState";
 import CodeBlock from "@/plugins/code-block";
@@ -40,50 +40,74 @@ const useConvertedValue = (initialValue: string): UseConvertedValueReturn => {
       error: null,
     }),
   );
-  const update = useCallback((newValue: string) => {
-    setState((prevState) => {
-      try {
-        return {
-          raw: newValue,
-          value: convert(newValue),
-          error: null,
-        };
-      } catch (error) {
-        return {
-          ...prevState,
-          error: error as Error,
-        };
-      }
-    });
-  }, []);
+  const update = useCallback(
+    (newValue: string) => {
+      setState((prevState) => {
+        try {
+          return {
+            raw: newValue,
+            value: convert(newValue),
+            error: null,
+          };
+        } catch (error) {
+          return {
+            ...prevState,
+            error: error as Error,
+          };
+        }
+      });
+    },
+    [setState],
+  );
   return [state, update];
 };
 const Converter = () => {
   const [{ raw, value, error }, update] = useConvertedValue(defaultHttp);
   return (
-    <div className={classes.root}>
+    <Box sx={{ width: "100%" }}>
       <CodeBlock
         editable
         initialValue={raw}
         onChange={update}
         language={http()}
-        className={classes.code}
+        style={{ border: "1px solid #30363d", borderRadius: "8px", overflow: "hidden" }}
       />
-      <div className={classes.actions}>
-        <select>
-          <option>Javascript</option>
-        </select>
-        {error && <div className={classes.error}>{error.message}</div>}
-      </div>
-      <div style={{ position: "relative" }}>
+      <Box
+        sx={{
+          display: "flex",
+          py: 2,
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: 2,
+        }}
+      >
+        <FormControl size="small" sx={{ minWidth: 120 }}>
+          <Select value="Javascript" disabled>
+            <MenuItem value="Javascript">Javascript</MenuItem>
+          </Select>
+        </FormControl>
+        {error && (
+          <Alert severity="error" sx={{ py: 0, px: 1 }}>
+            {error.message}
+          </Alert>
+        )}
+      </Box>
+      <Box sx={{ position: "relative" }}>
         <CodeBlock
           value={value}
           language={javascript()}
-          className={classes.code}
+          style={{ border: "1px solid #30363d", borderRadius: "8px", overflow: "hidden"  }}
         />
-        <CopyButton value={value} className={classes.copy} />
-      </div>
-    </div>
+        <CopyButton
+          value={value}
+          sx={{
+            position: "absolute",
+            right: 8,
+            bottom: 8,
+          }}
+        />
+      </Box>
+    </Box>
   );
 };
 
