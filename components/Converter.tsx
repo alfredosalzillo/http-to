@@ -10,8 +10,10 @@ import {
   Toolbar,
 } from "@mui/material";
 import dedent from "dedent";
+import type { SoftwareApplication, WithContext } from "schema-dts";
 import CopyButton from "@/components/CopyButton";
 import ErrorPopover from "@/components/ErrorPopover";
+import JsonLd from "@/components/JsonLd";
 import useLocalStorageState from "@/hooks/useLocalStorageState";
 import CodeBlock from "@/plugins/code-block";
 import http from "@/plugins/code-block/languages/http";
@@ -72,6 +74,27 @@ const useConvertedValue = (initialValue: string): UseConvertedValueReturn => {
 const Converter = () => {
   const [{ raw, value, error }, update] = useConvertedValue(defaultHttp);
 
+  const softwareAppJsonLd: WithContext<SoftwareApplication> = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "HTTP-TO",
+    applicationCategory: "DeveloperApplication",
+    operatingSystem: "Any",
+    description:
+      "Convert raw HTTP requests to clean JavaScript Fetch code instantly. A fast, free, and secure online tool for developers to generate request snippets.",
+    softwareVersion: "1.0.0",
+    url: "https://alfredosalzillo.me/http-to",
+    author: {
+      "@type": "Person",
+      name: "Alfredo Salzillo",
+    },
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+    },
+  };
+
   return (
     <Box
       sx={{
@@ -82,6 +105,7 @@ const Converter = () => {
         gap: 1,
       }}
     >
+      <JsonLd jsonLd={softwareAppJsonLd} />
       <Toolbar
         disableGutters
         sx={{
