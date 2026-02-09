@@ -1,2 +1,2 @@
-export { default } from './CopyButton';
-export * from './CopyButton';
+export * from "./CopyButton";
+export { default } from "./CopyButton";

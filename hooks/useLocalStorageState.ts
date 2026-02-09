@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
+import type { Dispatch, SetStateAction } from "react";
+import { useEffect, useState } from "react";
 
-import type { Dispatch, SetStateAction } from 'react';
-
-const isDefaultValueFactory = <S>(value: unknown): value is (() => S) => typeof value === 'function';
+const isDefaultValueFactory = <S>(value: unknown): value is () => S =>
+  typeof value === "function";
 
 export type UseLocalStorageStateOptions<S> = {
-  convert: (value: string) => S,
-}
+  convert: (value: string) => S;
+};
 const useLocalStorageState = <S>(
   key: string,
   defaultValue: S | (() => S),

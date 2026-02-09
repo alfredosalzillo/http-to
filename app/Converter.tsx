@@ -1,17 +1,15 @@
-'use client';
+"use client";
 
-import React, { useCallback } from 'react';
-import dedent from 'dedent';
-
-import CodeBlock from '@/plugins/code-block';
-import http from '@/plugins/code-block/languages/http';
-import toJavascriptFetch from '@/plugins/http/converters/toJavascriptFetch';
-import { parse } from '@/plugins/http';
-import javascript from '@/plugins/code-block/languages/javascript';
-import CopyButton from '@/components/CopyButton';
-import useLocalStorageState from '@/hooks/useLocalStorageState';
-
-import classes from './Convert.module.scss';
+import React, { useCallback } from "react";
+import dedent from "dedent";
+import classes from "./Convert.module.scss";
+import CopyButton from "@/components/CopyButton";
+import useLocalStorageState from "@/hooks/useLocalStorageState";
+import CodeBlock from "@/plugins/code-block";
+import http from "@/plugins/code-block/languages/http";
+import javascript from "@/plugins/code-block/languages/javascript";
+import { parse } from "@/plugins/http";
+import toJavascriptFetch from "@/plugins/http/converters/toJavascriptFetch";
 
 const defaultHttp = dedent`
   POST https://jsonplaceholder.typicode.com/posts HTTP/1.1
@@ -28,14 +26,14 @@ const defaultHttp = dedent`
 const convert = (value: string) => toJavascriptFetch(parse(value));
 
 type ConvertedValueState = {
-  raw: string,
-  value: string,
-  error?: Error | null
-}
-type UseConvertedValueReturn = [ConvertedValueState, (value: string) => void]
+  raw: string;
+  value: string;
+  error?: Error | null;
+};
+type UseConvertedValueReturn = [ConvertedValueState, (value: string) => void];
 const useConvertedValue = (initialValue: string): UseConvertedValueReturn => {
   const [state, setState] = useLocalStorageState<ConvertedValueState>(
-    'http-to__last_converted_value',
+    "http-to__last_converted_value",
     () => ({
       raw: initialValue,
       value: convert(initialValue),
@@ -77,7 +75,7 @@ const Converter = () => {
         </select>
         {error && <div className={classes.error}>{error.message}</div>}
       </div>
-      <div style={{ position: 'relative' }}>
+      <div style={{ position: "relative" }}>
         <CodeBlock
           value={value}
           language={javascript()}
