@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Box, Container } from "@mui/material";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import MUIConfig from "./MUIConfig";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
@@ -35,6 +36,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => (
           </Container>
         </MUIConfig>
       </AppRouterCacheProvider>
+      <GoogleAnalytics gaId="G-QZ1DYNJ6KE" />
     </body>
   </html>
 );
