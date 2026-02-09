@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     title: "HTTP-TO | Online HTTP Request Converter",
     description:
       "Convert raw HTTP requests to clean JavaScript Fetch code instantly. A fast, free, and secure online tool for developers.",
-    url: "https://http-to.com",
+    url: "https://alfredosalzillo.me/http-to",
     siteName: "HTTP-TO",
     locale: "en_US",
     type: "website",
