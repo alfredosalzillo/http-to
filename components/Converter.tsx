@@ -65,13 +65,23 @@ const Converter = () => {
   const [{ raw, value, error }, update] = useConvertedValue(defaultHttp);
   return (
     <Box sx={{ width: "100%" }}>
-      <CodeBlock
-        editable
-        initialValue={raw}
-        onChange={update}
-        language={http()}
-        style={{ border: "1px solid #30363d", borderRadius: "8px", overflow: "hidden" }}
-      />
+      <Box
+        sx={{
+          borderSize: 1,
+          borderColor: "divider",
+          borderStyle: "solid",
+          borderRadius: 2,
+          overflow: "hidden",
+          height: 300,
+        }}
+      >
+        <CodeBlock
+          editable
+          initialValue={raw}
+          onChange={update}
+          language={http()}
+        />
+      </Box>
       <Box
         sx={{
           display: "flex",
@@ -92,18 +102,24 @@ const Converter = () => {
           </Alert>
         )}
       </Box>
-      <Box sx={{ position: "relative" }}>
-        <CodeBlock
-          value={value}
-          language={javascript()}
-          style={{ border: "1px solid #30363d", borderRadius: "8px", overflow: "hidden"  }}
-        />
+      <Box
+        sx={{
+          position: "relative",
+          borderSize: 1,
+          borderColor: "divider",
+          borderStyle: "solid",
+          borderRadius: 2,
+          overflow: "hidden",
+          height: 300,
+        }}
+      >
+        <CodeBlock value={value} language={javascript()} />
         <CopyButton
           value={value}
           sx={{
             position: "absolute",
             right: 8,
-            bottom: 8,
+            top: 8,
           }}
         />
       </Box>

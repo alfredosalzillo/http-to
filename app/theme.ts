@@ -17,7 +17,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: 'inherit',
+    fontFamily: "inherit",
     h1: {
       fontSize: "2rem",
       lineHeight: 1.2,

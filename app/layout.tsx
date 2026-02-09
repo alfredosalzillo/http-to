@@ -39,11 +39,11 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => (
               >
                 HTTP-TO
               </Typography>
-              <Typography variant="subtitle1">HTTP request converter</Typography>
+              <Typography variant="subtitle1">
+                HTTP request converter
+              </Typography>
             </Box>
-            <Box sx={{ width: "100%" }}>
-              {children}
-            </Box>
+            <Box sx={{ width: "100%" }}>{children}</Box>
             <Box component="footer">
               <Link
                 href="https://github.com/alfredosalzillo/http-to"

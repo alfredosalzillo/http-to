@@ -1,8 +1,4 @@
-import type { Dispatch, SetStateAction } from "react";
-import { useEffect, useState } from "react";
-
-const isDefaultValueFactory = <S>(value: unknown): value is () => S =>
-  typeof value === "function";
+import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
 
 export type UseLocalStorageStateOptions<S> = {
   convert: (value: string) => S;
@@ -14,16 +10,14 @@ const useLocalStorageState = <S>(
     convert: (value) => JSON.parse(value) as S,
   },
 ): [S, Dispatch<SetStateAction<S>>] => {
-  const [state, setState] = useState<S>(() => {
+  const [state, setState] = useState<S>(defaultValue);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: should only depend on key
+  useEffect(() => {
     const savedValue = localStorage.getItem(key);
     if (savedValue) {
-      return options.convert(savedValue);
+      setState(options.convert(savedValue));
     }
-    if (isDefaultValueFactory(defaultValue)) {
-      return defaultValue();
-    }
-    return defaultValue;
-  });
+  }, [key]);
   useEffect(() => {
     localStorage.setItem(key, JSON.stringify(state));
   }, [key, state]);

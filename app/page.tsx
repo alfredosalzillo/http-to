@@ -1,11 +1,7 @@
 "use client";
 
-import dynamic from "next/dynamic";
+import Converter from "@/components/Converter";
 
-const Converter = dynamic(() => import("@/app/Converter"), { ssr: false });
-
-const Home = () => (
-  <Converter />
-);
+const Home = () => <Converter />;
 
 export default Home;

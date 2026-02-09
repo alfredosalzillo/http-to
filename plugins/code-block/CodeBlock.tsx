@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
+import { type FC, useEffect, useImperativeHandle, useRef } from "react";
 import type { Extension } from "@codemirror/state";
 import { oneDark } from "@codemirror/theme-one-dark";
 import { EditorView } from "@codemirror/view";
@@ -61,6 +61,7 @@ type DivProps = React.DetailedHTMLProps<
   HTMLDivElement
 >;
 export type CodeBlockProps = {
+  ref?: React.Ref<CodeBlockController>;
   language: Extension;
   initialValue?: string;
   editable?: boolean;
@@ -68,43 +69,51 @@ export type CodeBlockProps = {
   onChange?: ChangeHandler;
 } & Omit<DivProps, "onChange">;
 
-const CodeBlock = forwardRef<CodeBlockController | undefined, CodeBlockProps>(
-  ({ language, initialValue, editable, value, onChange, ...props }, ref) => {
-    const root = useRef<HTMLDivElement>(null);
-    const editor = useRef<EditorView>(null);
-    const changeRef = useAutoUpdateRef(onChange);
-    useEffect(() => {
-      if (editor.current) return;
-      if (!root.current) return;
-      editor.current = new EditorView({
-        extensions: [
-          setup,
-          language,
-          EditorView.editable.of(editable ?? false),
-          EditorView.updateListener.of((update) => {
-            if (update.docChanged) {
-              changeRef.current?.(update.state.doc.toJSON().join("\n"));
-            }
-          }),
-        ],
-        parent: root.current,
-        doc: initialValue ?? "",
-      });
-    }, [initialValue, editable, language, changeRef]);
-    useEffect(() => {
-      if (value === undefined) return;
-      if (!editor.current) return;
-      editor.current.dispatch({
-        changes: {
-          from: 0,
-          to: editor.current.state.doc.length,
-          insert: value,
-        },
-      });
-    }, [value]);
-    useImperativeHandle(ref, () => createController(() => editor.current));
-    return <div {...props} ref={root} />;
-  },
-);
+const CodeBlock: FC<CodeBlockProps> = ({
+  ref,
+  language,
+  initialValue,
+  editable,
+  value,
+  onChange,
+  ...props
+}) => {
+  const root = useRef<HTMLDivElement>(null);
+  const editor = useRef<EditorView>(null);
+  const changeRef = useAutoUpdateRef(onChange);
+  useEffect(() => {
+    if (editor.current) return;
+    if (!root.current) return;
+    editor.current = new EditorView({
+      extensions: [
+        setup,
+        language,
+        EditorView.editable.of(editable ?? false),
+        EditorView.updateListener.of((update) => {
+          if (update.docChanged) {
+            changeRef.current?.(update.state.doc.toJSON().join("\n"));
+          }
+        }),
+      ],
+      parent: root.current,
+      doc: initialValue ?? "",
+    });
+  }, [initialValue, editable, language, changeRef]);
+  useEffect(() => {
+    if (value === undefined) return;
+    if (!editor.current) return;
+    editor.current.dispatch({
+      changes: {
+        from: 0,
+        to: editor.current.state.doc.length,
+        insert: value,
+      },
+    });
+  }, [value]);
+  useImperativeHandle<CodeBlockController, CodeBlockController>(ref, () =>
+    createController(() => editor.current),
+  );
+  return <div {...props} ref={root} />;
+};
 
 export default CodeBlock;
