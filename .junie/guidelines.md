@@ -34,3 +34,22 @@ You are an AI assistant helping with the development of this project. Follow the
 3. **Plan**: Create a step-by-step plan.
 4. **Implement**: Write clean, documented code.
 5. **Verify**: Ensure the changes work as expected and follow the guidelines.
+
+## Component Style
+- All components must be arrow functions.
+- Props must be defined using a type named `{{ComponentName}}Props` (required only if there is at least one prop).
+- Use the `FC` type from React for component definitions.
+- The main file component should always be exported as default.
+
+### Example
+```typescript
+type ExampleProps = {
+  // props definition
+}
+
+const Example: FC<ExampleProps> = () => {
+  return null;
+};
+
+export default Example;
+```
