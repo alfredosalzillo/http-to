@@ -71,12 +71,12 @@ export type CodeBlockProps = {
 const CodeBlock = forwardRef<CodeBlockController | undefined, CodeBlockProps>(
   ({ language, initialValue, editable, value, onChange, ...props }, ref) => {
     const root = useRef<HTMLDivElement>(null);
-    const editor = useRef<EditorView>();
+    const editor = useRef<EditorView>(null);
     const changeRef = useAutoUpdateRef(onChange);
     useEffect(() => {
       if (editor.current) return;
       if (!root.current) return;
-      editor.current = new EditorView({
+      const view = new EditorView({
         extensions: [
           setup,
           language,
@@ -90,6 +90,8 @@ const CodeBlock = forwardRef<CodeBlockController | undefined, CodeBlockProps>(
         parent: root.current,
         doc: initialValue ?? "",
       });
+      // @ts-expect-error
+      editor.current = view;
     }, [initialValue, editable, language, changeRef]);
     useEffect(() => {
       if (value === undefined) return;
